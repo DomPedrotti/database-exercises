@@ -11,6 +11,4 @@ select * from employees;
 select * from departments;
 -- I don't see any relationship between the employees and deparptments tables
  
-show create table departments;
-
--- show create table dept_manager;
+show create table dept_manager;
