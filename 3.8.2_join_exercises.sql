@@ -93,3 +93,19 @@ order by sal.salary desc
 limit 1
 ;
 
+-- Bonus Find the names of all current employees, their department name, and their current manager's name.
+
+;
+
+-- Bonus Find the highest paid employee in each department.
+select d.dept_name, max(sal.salary) as 'max_salary'
+from departments as d
+join dept_emp as ref
+on d.dept_no = ref.dept_no
+join employees as e
+on e.emp_no = ref.emp_no
+join salaries as sal
+on sal.emp_no = ref.emp_no
+where sal.to_date > now() and ref.to_date > now()
+group by d.dept_name
+;
