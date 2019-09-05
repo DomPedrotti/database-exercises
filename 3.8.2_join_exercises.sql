@@ -27,7 +27,7 @@ select t.title, count(t.title)
 from titles as t
 join dept_emp as ref
 on t.emp_no = ref.emp_no
-where ref.dept_no = 'd009' and t.`to_date` > now()
+where ref.dept_no = 'd009' and t.`to_date` > now() and ref.to_date > now()
 group by t.title
 ;
 
