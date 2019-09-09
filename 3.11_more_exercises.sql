@@ -117,4 +117,72 @@ select first_name, last_name from actor where last_name like '%li%' order by las
 -- Using IN, display the country_id and country columns for the following countries: Afghanistan, Bangladesh, and China:
 select country_id, country from country where country in ('Afghanistan', 'Bangladesh', 'China')
 ;
-
+-- List the last names of all the actors, as well as how many actors have that last name.
+select last_name, count(`last_name`) from actor group by last_name
+;
+-- List last names of actors and the number of actors who have that last name, but only for names that are shared by at least two actors
+select last_name, count(`last_name`) as count from actor  
+group by last_name
+having count > 1
+;
+-- You cannot locate the schema of the address table. Which query would you use to re-create it?
+use sakila
+;
+-- Use JOIN to display the first and last names, as well as the address, of each staff member.
+select first_name, last_name, address 
+from staff
+join address
+using(address_id)
+;
+-- Use JOIN to display the total amount rung up by each staff member in August of 2005.
+select staff.first_name, staff.last_name, sum(payment.amount)
+from payment
+join staff
+using (staff_id)
+where year(payment.payment_date) = 2005 and month(payment.payment_date) = 8 
+group by (staff_id)
+;
+-- List each film and the number of actors who are listed for that film.
+select title, count(*)
+from film
+join film_actor
+using(film_id) 
+group by title
+;
+-- How many copies of the film Hunchback Impossible exist in the inventory system?
+select count(*)
+from inventory
+join film
+using(film_id)
+where film.title like 'hunchback impossible'
+group by film_id
+;
+-- The music of Queen and Kris Kristofferson have seen an unlikely resurgence. As an unintended consequence, films starting with the letters K and Q have also soared in popularity. Use subqueries to display the titles of movies starting with the letters K and Q whose language is English.
+select title 
+from(
+	select title, language_id from film
+	where title like 'q%' or title like 'k%'
+	) as qk_titles
+join language as lan
+using(language_id)
+where lan.name like 'english'
+;
+-- Use subqueries to display all actors who appear in the film Alone Trip.
+select first_name, last_name 
+from actor
+join film_actor as ref
+using (actor_id)
+join film
+using (film_id)
+where film.title like 'alone trip'
+;
+-- You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers.
+select first_name, last_name, email
+from customer
+join address
+using(address_id)
+join city
+using(city_id)
+join country 
+using(country_id)
+where country.country like 'canada'
