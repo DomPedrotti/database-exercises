@@ -99,5 +99,22 @@ from city
 join country
 where country.code = city.countrycode
 ;
-
+-- ----------------------------------------------------------------------
+-- Sakila Database
+use sakila;
+-- Display the first and last names in all lowercase of all the actors.
+select lower(concat(first_name, ' ', last_name)) from actor
+;
+-- You need to find the ID number, first name, and last name of an actor, of whom you know only the first name, "Joe." What is one query would you could use to obtain this information?
+select first_name, last_name, actor_id from actor where first_name like 'joe'
+;
+-- Find all actors whose last name contain the letters "gen":
+select first_name, last_name from actor where last_name like '%gen%'
+;
+-- Find all actors whose last names contain the letters "li". This time, order the rows by last name and first name, in that order.
+select first_name, last_name from actor where last_name like '%li%' order by last_name, first_name
+;
+-- Using IN, display the country_id and country columns for the following countries: Afghanistan, Bangladesh, and China:
+select country_id, country from country where country in ('Afghanistan', 'Bangladesh', 'China')
+;
 
