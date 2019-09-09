@@ -350,3 +350,102 @@ from film
 left join language as lan
 using (language_id)
 
+-- Select the first_name, last_name, address, address2, city name, district, and postal code columns from the staff table, performing 2 left joins with the address table then the city table to get the address and city related columns.
+-- returns correct number of rows: 2
+select cust.first_name, cust.last_name, ad.address, ad.address2, city.city as city_name, ad.district, ad.postal_code 
+from address as ad
+left join city
+using(city_id)
+right join staff as cust
+using(address_id)
+
+-- ---------------------------------------------------------------------------------
+
+-- What is the average replacement cost of a film? Does this change depending on the rating of the film?
+select avg(replacement_cost) 
+from film; 
+
+select rating, avg(replacement_cost) as avg_replacement_cost
+from film
+group by rating
+;
+-- How many different films of each genre are in the database?
+select cat.name, count(*)
+from category as cat
+join film_category as REF
+using (category_id)
+join film
+using (film_id)
+group by cat.name
+;
+-- What are the 5 frequently rented films?
+select f.title, count(*)
+from film as f
+join inventory as i
+using(film_id)
+join rental as r
+using (inventory_id)
+group by f.title
+order by count(*) desc
+limit 5
+;
+-- What are the most most profitable films (in terms of gross revenue)?
+select f.title, sum(pay.amount) as revenue
+from film as f
+join inventory as i
+using(film_id)
+join rental as r
+using (inventory_id)
+join payment as pay
+using (rental_id)
+group by f.title
+order by revenue desc
+limit 5
+;
+-- Who is the best customer?
+select concat(cust.first_name, ' ', cust.last_name) as customer, sum(pay.amount) as revenue
+from film as f
+join inventory as i
+using(film_id)
+join rental as r
+using (inventory_id)
+join payment as pay
+using (rental_id)
+join customer as cust
+on pay.customer_id = cust.customer_id
+group by concat(cust.first_name, ' ', cust.last_name)
+order by revenue desc
+limit 1
+;
+-- Who are the most popular actors (that have appeared in the most films)?
+select concat(last_name, ', ', first_name), count(*)
+from film
+join film_actor
+using(film_id)
+join actor 
+using(actor_id)
+group by concat(last_name, ', ', first_name)
+order by count(*) desc
+limit 5
+;
+-- What are the sales for each store for each month in 2005?
+select month(payment_date), s.store_id, sum(amount) as sales
+from payment
+join store as s
+on staff_id = manager_staff_id
+where year(payment_date) = 2005
+group by month(payment_date), store_id
+;
+-- Bonus: Find the film title, customer name, customer phone number, and customer address for all the outstanding DVDs.
+select film.title, concat(last_name, ', ',first_name) as cust_name, ad.phone, ad.address
+from film
+join inventory
+using(film_id)
+join rental
+using (inventory_id)
+join customer 
+using (customer_id)
+join address as ad
+using(address_id)
+where return_date is null
+;
