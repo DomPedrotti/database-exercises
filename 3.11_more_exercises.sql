@@ -186,3 +186,46 @@ using(city_id)
 join country 
 using(country_id)
 where country.country like 'canada'
+-- Sales have been lagging among young families, and you wish to target all family movies for a promotion. Identify all movies categorized as famiy films.
+select title 
+from film
+join film_category
+using (film_id)
+join category as cat
+using (category_id)
+where cat.name like 'family'
+;
+-- Write a query to display how much business, in dollars, each store brought in.
+select store_id, sum(amount)
+from store
+join customer as cust
+using (store_id)
+join payment as pmt
+using (customer_id)
+group by store_id
+;
+-- Write a query to display for each store its store ID, city, and country.
+select store_id, city, country
+from store
+join address
+using (address_id)
+join city 
+using(city_id)
+join country 
+using(country_id) 
+;
+-- List the top five genres in gross revenue in descending order. (Hint: you may need to use the following tables: category, film_category, inventory, payment, and rental.)
+select cat.name, sum(amount)
+from category as cat
+join film_category
+using (category_id)
+join film 
+using(film_id)
+join inventory
+using (film_id)
+join rental
+using (inventory_id)
+join payment 
+using (rental_id)
+group by cat.name
+limit 5
