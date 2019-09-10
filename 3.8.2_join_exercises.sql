@@ -94,7 +94,6 @@ limit 1
 ;
 
 -- Bonus Find the names of all current employees, their department name, and their current manager's name.
--- Bonus Find the names of all current employees, their department name, and their current manager's name.
 select concat(e.first_name, ' ', e.last_name) as employee_name, d.dept_name, m.manager_name
 from departments as d
 join dept_emp as ref
@@ -103,15 +102,15 @@ join employees as e
 on e.emp_no = ref.emp_no
 join
 (
--- subquery of first exercise matching current manager to department
-select d.dept_name, concat(e.first_name, ' ', e.last_name) as manager_name
-from departments as d
-join dept_manager as ref
-on d.dept_no = ref.dept_no
-join employees as e
-on e.emp_no = ref.emp_no
-where ref.to_date > now()
-order by d.dept_name
+    -- subquery of first exercise matching current manager to department
+    select d.dept_name, concat(e.first_name, ' ', e.last_name) as manager_name
+    from departments as d
+    join dept_manager as ref
+    on d.dept_no = ref.dept_no
+    join employees as e
+    on e.emp_no = ref.emp_no
+    where ref.to_date > now()
+    order by d.dept_name
 )
 as m
 on m.dept_name = d.dept_name
