@@ -12,6 +12,9 @@ This repo contains my first steps into learning SQL. We covered many different t
     - WHERE
     - ORDER BY
     - LIMIT
-- Aggregation Functions
-- GROUP BY Aggregations
+    - Aggregate Functions and Data Transformations
+    - GROUP BY
+- Joining Tables
+- Subqueries
+- Building Temporary Tables
 
